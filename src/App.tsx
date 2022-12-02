@@ -1,10 +1,13 @@
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { Signup } from "./components/Signup";
+import { Signin } from "./components/Signin";
 
 function Main() {
   return (
     <div>
       <Signup />
+      <hr />
+      <Signin />
     </div>
   );
 }

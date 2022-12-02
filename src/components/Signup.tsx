@@ -25,6 +25,7 @@ export function Signup() {
 
   return (
     <div>
+      <h1>Signup</h1>
       {error && (
         <pre style={{ color: "red" }}>{JSON.stringify(error, null, 4)}</pre>
       )}
