@@ -2,32 +2,23 @@ import { useMutation } from "@apollo/client";
 import { useState } from "react";
 import { SIGNIN } from "../graphql/singin";
 
-interface IUser {
-  id: number;
-  email: string;
-}
-
-export function Signin() {
-  const [user, setUser] = useState<null | IUser>(null);
+export function Signin(props: { onTokenChange: (token: string) => void }) {
   const [email, setEmail] = useState("test1@gmail.com");
   const [password, setPassword] = useState("secretSecret");
   const [wrongCredentials, setWrongCredentials] = useState(false);
 
-  const [doSignupMutation, { loading, error }] = useMutation(SIGNIN);
+  const [doSigninMutation, { loading, error }] = useMutation(SIGNIN);
 
   async function doSingin() {
     try {
-      const { data } = await doSignupMutation({
+      const { data } = await doSigninMutation({
         variables: {
           email: email,
           password: password,
         },
       });
       if (data.signin) {
-        setUser(data.signin);
-        setEmail("");
-        setPassword("");
-        setWrongCredentials(false);
+        props.onTokenChange(data.signin);
       } else {
         setWrongCredentials(true);
       }
@@ -38,7 +29,6 @@ export function Signin() {
     <div>
       <h1>Signin</h1>
       {wrongCredentials === true && <p>Identifiants incorrectes</p>}
-      {user && <p>Tu es connecté en tant que {user.id}</p>}
       {error && (
         <pre style={{ color: "red" }}>{JSON.stringify(error, null, 4)}</pre>
       )}
