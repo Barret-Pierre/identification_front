@@ -16,18 +16,25 @@ import { ME } from "./graphql/me";
 function Main() {
   const [user, setUser] = useState<IUser | null | undefined>(undefined);
 
-  const { data, refetch } = useQuery(ME);
+  const { data, error, refetch } = useQuery(ME, {
+    fetchPolicy: "network-only",
+  });
 
   useEffect(() => {
     console.log("Got data:", data);
     if (data) {
       if (data.me) {
         setUser(data.me);
-      } else {
-        setUser(null);
       }
     }
   }, [data]);
+
+  useEffect(() => {
+    console.log(error);
+    if (error) {
+      setUser(null);
+    }
+  }, [error]);
 
   function onTokenChange(token?: string) {
     if (token) {
@@ -41,10 +48,8 @@ function Main() {
 
   return (
     <div style={{ padding: 16 }}>
-      {user ? (
-        <div>
-          <Dashboard user={user} onTokenChange={onTokenChange} />
-        </div>
+      {user === undefined ? (
+        <p>Loading...</p>
       ) : user === null ? (
         <div>
           <Signup />
@@ -52,7 +57,9 @@ function Main() {
           <Signin onTokenChange={onTokenChange} />
         </div>
       ) : (
-        <p>Loading...</p>
+        <div>
+          <Dashboard user={user} onTokenChange={onTokenChange} />
+        </div>
       )}
     </div>
   );
