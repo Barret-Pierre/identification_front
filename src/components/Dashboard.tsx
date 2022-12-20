@@ -6,7 +6,9 @@ export function Dashboard(props: {
   user: IUser;
   onTokenChange: (token?: string) => void;
 }) {
-  const { data } = useQuery<{ readUsers: IUser[] }>(READ_USERS);
+  const { data } = useQuery<{ readUsers: IUser[] }>(READ_USERS, {
+    fetchPolicy: "network-only",
+  });
 
   return (
     <div>

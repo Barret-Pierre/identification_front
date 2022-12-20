@@ -9,6 +9,7 @@ import { setContext } from "@apollo/client/link/context";
 import { Signup } from "./components/Signup";
 import { Signin } from "./components/Signin";
 import { Dashboard } from "./components/Dashboard";
+import { Commments } from "./components/Comments";
 import { useEffect, useState } from "react";
 import { IUser } from "./interfaces";
 import { ME } from "./graphql/me";
@@ -59,6 +60,7 @@ function Main() {
       ) : (
         <div>
           <Dashboard user={user} onTokenChange={onTokenChange} />
+          <Commments user={user} />
         </div>
       )}
     </div>
